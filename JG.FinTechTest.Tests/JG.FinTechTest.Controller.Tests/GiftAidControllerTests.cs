@@ -38,6 +38,72 @@
         }
 
         [Test]
+        public async Task Given_MinimumAmount_When_GetGiftAidAmount_Returns_Valid_GiftAidResponse()
+        {
+            //arrange
+            giftAidCalculatorMock.Setup(o => o.CalculateGiftAidAsync(It.IsAny<GiftAid>())).ReturnsAsync(5d);
+
+            //act
+            var result = await this.giftAidController.GetGiftAidAmount(20d).ConfigureAwait(false);
+            var giftAidResponse = result.Value;
+
+            //assert
+            Assert.IsNotNull(giftAidResponse);
+            Assert.AreEqual(5d, giftAidResponse.GiftAidAmount);
+            Assert.AreEqual(20d, giftAidResponse.DonationAmount);
+        }
+
+        [Test]
+        public async Task Given_MaximumAmount_When_GetGiftAidAmount_Returns_Valid_GiftAidResponse()
+        {
+            //arrange
+            giftAidCalculatorMock.Setup(o => o.CalculateGiftAidAsync(It.IsAny<GiftAid>())).ReturnsAsync(5d);
+
+            //act
+            var result = await this.giftAidController.GetGiftAidAmount(100000.00d).ConfigureAwait(false);
+            var giftAidResponse = result.Value;
+
+            //assert
+            Assert.IsNotNull(giftAidResponse);
+            Assert.AreEqual(5d, giftAidResponse.GiftAidAmount);
+            Assert.AreEqual(100000.00d, giftAidResponse.DonationAmount);
+        }
+
+        [Test]
+        public async Task Given_Amount_LesserThan_MinimumAmount_When_GetGiftAidAmount_Returns_Valid_GiftAidResponse()
+        {
+            //arrange
+            giftAidCalculatorMock.Setup(o => o.CalculateGiftAidAsync(It.IsAny<GiftAid>())).Throws(new System.Exception("Invalid Donation Value"));
+
+            //act
+            var result = await this.giftAidController.GetGiftAidAmount(19.9999d).ConfigureAwait(false);
+            var giftAidResponse = result.Value;
+
+            //assert
+            Assert.AreEqual(default(GiftAidResponse), giftAidResponse);
+            Assert.IsInstanceOf(typeof(BadRequestObjectResult), result.Result);
+            Assert.AreEqual("Invalid Donation Value", ((BadRequestObjectResult)result.Result).Value);
+            Assert.AreEqual((int)HttpStatusCode.BadRequest, ((BadRequestObjectResult)result.Result).StatusCode);
+        }
+
+        [Test]
+        public async Task Given_Amount_GreaterThan_MaximumAmount_When_GetGiftAidAmount_Returns_Valid_GiftAidResponse()
+        {
+            //arrange
+            giftAidCalculatorMock.Setup(o => o.CalculateGiftAidAsync(It.IsAny<GiftAid>())).Throws(new System.Exception("Invalid Donation Value"));
+
+            //act
+            var result = await this.giftAidController.GetGiftAidAmount(100000.01d).ConfigureAwait(false);
+            var giftAidResponse = result.Value;
+
+            //assert
+            Assert.AreEqual(default(GiftAidResponse), giftAidResponse);
+            Assert.IsInstanceOf(typeof(BadRequestObjectResult), result.Result);
+            Assert.AreEqual("Invalid Donation Value", ((BadRequestObjectResult)result.Result).Value);
+            Assert.AreEqual((int)HttpStatusCode.BadRequest, ((BadRequestObjectResult)result.Result).StatusCode);
+        }
+
+        [Test]
         public async Task Given_DefaultDonation_When_GetGiftAidAmount_Returns_BadRequestResponse400()
         {
             //arrange
