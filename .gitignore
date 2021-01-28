@@ -8,3 +8,10 @@
 /.vs/JG.FinTechTest/v16
 /JG.FinTechTest/bin/Debug/netcoreapp2.1
 /JG.FinTechTest.Tests/bin/Debug/netcoreapp2.1
+/JG.FinTech.Features/obj/Debug/netcoreapp2.1
+/.vs/JG.FinTechTest/DesignTimeBuild
+/JG.FinTech.Features/bin/Debug
+/JG.FinTech.Features/obj
+/JG.FinTech.Models/bin/Debug
+/JG.FinTech.Models/obj
+/JG.FinTechTest.Tests/bin/Debug/netcoreapp2.2

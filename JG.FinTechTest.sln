@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JG.FinTechTest", "JG.FinTec
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JG.FinTechTest.Tests", "JG.FinTechTest.Tests\JG.FinTechTest.Tests.csproj", "{F3137C9F-9A42-455D-BEE9-B50207669E56}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JG.FinTech.Features", "JG.FinTech.Features\JG.FinTech.Features.csproj", "{0A1F78EB-E4D2-4FAD-9467-F445C247280B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JG.FinTech.Models", "JG.FinTech.Models\JG.FinTech.Models.csproj", "{DF3A95F7-C688-4C29-8C97-DD3AA01D2126}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{F3137C9F-9A42-455D-BEE9-B50207669E56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3137C9F-9A42-455D-BEE9-B50207669E56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3137C9F-9A42-455D-BEE9-B50207669E56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A1F78EB-E4D2-4FAD-9467-F445C247280B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A1F78EB-E4D2-4FAD-9467-F445C247280B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A1F78EB-E4D2-4FAD-9467-F445C247280B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A1F78EB-E4D2-4FAD-9467-F445C247280B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF3A95F7-C688-4C29-8C97-DD3AA01D2126}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF3A95F7-C688-4C29-8C97-DD3AA01D2126}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF3A95F7-C688-4C29-8C97-DD3AA01D2126}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF3A95F7-C688-4C29-8C97-DD3AA01D2126}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
