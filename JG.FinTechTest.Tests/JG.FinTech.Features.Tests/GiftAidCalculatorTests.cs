@@ -31,13 +31,65 @@ namespace JG.FinTech.Features.Tests
         }
 
         [Test]
+        public async Task Given_MinimumAmount_When_CalculateGiftAidCalled_Returns_GiftAidCalculationWithTaxRate()
+        {
+            //arrange
+            giftAid = GiftAidCalculator.minGiftAid;
+
+            //act
+            var result = await giftAidCalculator.CalculateGiftAidAsync(giftAid).ConfigureAwait(false);
+
+            //assert
+            Assert.AreEqual(5.00d, result);
+        }
+
+        [Test]
+        public async Task Given_MaximumAmount_When_CalculateGiftAidCalled_Returns_GiftAidCalculationWithTaxRate()
+        {
+            //arrange
+            giftAid = GiftAidCalculator.maxGiftAid;
+
+            //act
+            var result = await giftAidCalculator.CalculateGiftAidAsync(giftAid).ConfigureAwait(false);
+
+            //assert
+            Assert.AreEqual(25000.00d, result);
+        }
+
+        [Test]
+        public void Given_Amount_LessThan_MinimumGiftAid_When_CalculateGiftAidCalled_Throws_Exception()
+        {
+            //arrange
+            giftAid = new GiftAid(19.999999999999d);
+
+            //act
+            var exception = Assert.ThrowsAsync<Exception>(() => giftAidCalculator.CalculateGiftAidAsync(giftAid), "Provide InValid Denomination - either 0 or a negative value");
+
+            //assert
+            Assert.AreEqual($"Invalid Denomination, Accepted Range £{GiftAidCalculator.minGiftAid.DenominationAmount} - £{GiftAidCalculator.maxGiftAid.DenominationAmount}", exception.Message);
+        }
+
+        [Test]
+        public void Given_Amount_GreaterThan_MaximumGiftAid_When_CalculateGiftAidCalled_Throws_Exception()
+        {
+            //arrange
+            giftAid = new GiftAid(100000.1234d);
+
+            //act
+            var exception = Assert.ThrowsAsync<Exception>(() => giftAidCalculator.CalculateGiftAidAsync(giftAid), "Provide InValid Denomination - either 0 or a negative value");
+
+            //assert
+            Assert.AreEqual($"Invalid Denomination, Accepted Range £{GiftAidCalculator.minGiftAid.DenominationAmount} - £{GiftAidCalculator.maxGiftAid.DenominationAmount}", exception.Message);
+        }
+
+        [Test]
         public void Given_DefaultGiftAid_When_CalculateGiftAidAsyncCalled_Throws_Exception()
         {
             //act
             var exception = Assert.ThrowsAsync<Exception>(() => giftAidCalculator.CalculateGiftAidAsync(default), "Provide InValid Denomination - either 0 or a negative value");
 
             //assert
-            Assert.AreEqual("Invalid Denomination", exception.Message);
+            Assert.AreEqual($"Invalid Denomination, Accepted Range £{GiftAidCalculator.minGiftAid.DenominationAmount} - £{GiftAidCalculator.maxGiftAid.DenominationAmount}", exception.Message);
         }
 
 
@@ -51,7 +103,7 @@ namespace JG.FinTech.Features.Tests
             var exception = Assert.ThrowsAsync<Exception>(() => giftAidCalculator.CalculateGiftAidAsync(giftAid), "Provide InValid Denomination - either 0 or a negative value");
 
             //assert
-            Assert.AreEqual("Invalid Denomination", exception.Message);
+            Assert.AreEqual($"Invalid Denomination, Accepted Range £{GiftAidCalculator.minGiftAid.DenominationAmount} - £{GiftAidCalculator.maxGiftAid.DenominationAmount}", exception.Message);
         }
 
         [Test]
@@ -64,7 +116,7 @@ namespace JG.FinTech.Features.Tests
             var exception = Assert.ThrowsAsync<Exception>(() => giftAidCalculator.CalculateGiftAidAsync(giftAid), "Provide InValid Denomination - either 0 or a negative value");
 
             //assert
-            Assert.AreEqual("Invalid Denomination", exception.Message);
+            Assert.AreEqual($"Invalid Denomination, Accepted Range £{GiftAidCalculator.minGiftAid.DenominationAmount} - £{GiftAidCalculator.maxGiftAid.DenominationAmount}", exception.Message);
         }
     }
 }
