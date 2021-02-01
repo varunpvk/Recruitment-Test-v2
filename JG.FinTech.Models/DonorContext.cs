@@ -9,6 +9,9 @@
 
         }
 
+        public DonorContext()
+        { }
+
         public DbSet<DonorDetails> DonorDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
