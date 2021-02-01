@@ -1,19 +1,21 @@
 ﻿namespace JG.FinTech.Models
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
     using System.Runtime.Serialization;
 
     [DataContract]
-    public struct GiftAidResponse
+    public class DeclarationDetails
     {
-        [DataMember]
         [Key]
-        public string DonorID { get; set; }
-        
-        [DataMember]
-        public double GiftAidAmount { get; set; }
+        public string DeclarationID { get; }
 
         [DataMember]
         public double DonationAmount { get; set; }
+
+        public DeclarationDetails()
+        {
+            this.DeclarationID = Guid.NewGuid().ToString();
+        }
     }
 }
