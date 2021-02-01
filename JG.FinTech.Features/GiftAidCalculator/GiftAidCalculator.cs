@@ -1,22 +1,25 @@
 ﻿namespace JG.FinTech.Features.GiftAidCalculator
 {
     using JG.FinTech.Models;
+    using System;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
-
     public class GiftAidCalculator : IGiftAidCalculator
     {
         private const char currencyPrecisionIdentifier = '.';
 
-        public static readonly GiftAid minGiftAid = new GiftAid(20.00d);
+        public static readonly GiftAid minGiftAid = new GiftAid(2.00d);
         public static readonly GiftAid maxGiftAid = new GiftAid(100000.00d);
 
-        public async Task<double> CalculateGiftAidAsync(GiftAid giftAid)
+        public Task<double> CalculateGiftAidAsync(GiftAid giftAid)
         {
-            if (giftAid.Equals(default) || IsInValidDenomination(giftAid))
+            if (giftAid.Equals(default))
+                throw new ArgumentNullException("giftAid");
+
+            if (IsInValidDenomination(giftAid))
                 throw new System.Exception($"Invalid Denomination, Accepted Range £{minGiftAid.DenominationAmount} - £{maxGiftAid.DenominationAmount}");
 
-            return await Task.FromResult(GetGiftAidCalculation(giftAid)).ConfigureAwait(false);
+            return Task.FromResult(GetGiftAidCalculation(giftAid));
         }
 
         private bool IsInValidDenomination(GiftAid giftAid) => (giftAid < minGiftAid) || (giftAid > maxGiftAid);

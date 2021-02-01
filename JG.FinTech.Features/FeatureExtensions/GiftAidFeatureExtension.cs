@@ -9,5 +9,10 @@
         {
             return feature.AddScoped<IGiftAidCalculator, GiftAidCalculator>();
         }
+
+        public static IServiceCollection AddDeclarationToDonorMappingFeature(this IServiceCollection feature)
+        {
+            return feature.AddScoped<IDeclarationToDonorMapper, DeclarationToDonorMapper>();
+        }
     }
 }

@@ -16,3 +16,6 @@
 /JG.FinTech.Models/obj
 /JG.FinTechTest.Tests/bin/Debug/netcoreapp2.2
 /.vs/JG.FinTechTest/config
+/JG.FinTech.Domain/bin/Debug
+/JG.FinTech.Domain/obj/Debug
+/JG.FinTech.Domain/obj

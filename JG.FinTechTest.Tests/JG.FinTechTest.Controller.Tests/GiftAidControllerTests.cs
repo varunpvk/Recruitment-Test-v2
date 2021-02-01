@@ -1,9 +1,12 @@
 ﻿namespace JG.FinTechTest.Tests.JG.FinTechTest.Controller.Tests
 {
+    using global::JG.FinTech.Domain;
+    using global::JG.FinTech.Features;
     using global::JG.FinTech.Features.GiftAidCalculator;
     using global::JG.FinTech.Models;
     using global::JG.FinTechTest.Controllers;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
     using Moq;
     using NUnit.Framework;
     using System.Net;
@@ -12,13 +15,19 @@
     public class GiftAidControllerTests
     {
         private Mock<IGiftAidCalculator> giftAidCalculatorMock;
+        private Mock<IConfiguration> configMock;
+        private Mock<IGiftAidRepository> giftAidRepositoryMock;
+        private Mock<IDeclarationToDonorMapper> declarationToDonorMapperMock;
         private GiftAidController giftAidController;
 
         [SetUp]
         public void Setup()
         {
             giftAidCalculatorMock = new Mock<IGiftAidCalculator>();
-            giftAidController = new GiftAidController(giftAidCalculatorMock.Object);
+            configMock = new Mock<IConfiguration>();
+            giftAidRepositoryMock = new Mock<IGiftAidRepository>();
+            declarationToDonorMapperMock = new Mock<IDeclarationToDonorMapper>();
+            giftAidController = new GiftAidController(giftAidCalculatorMock.Object, giftAidRepositoryMock.Object, declarationToDonorMapperMock.Object, configMock.Object);
         }
 
         [Test]
