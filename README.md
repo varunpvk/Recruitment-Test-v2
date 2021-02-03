@@ -28,7 +28,5 @@
        	* Capture the JWT from the response and authorize to get access to the remaining endpoints
        	* To calculate GiftAid call api/giftaid
        	* To Store UserDetails to DB call api/donor/add
-
-![Swagger](../../../Users/varun.palavalasa.FARFETCH/Desktop/Swagger.png)
 --------------------------------------------------------------------------------------------------------------------------------
 
