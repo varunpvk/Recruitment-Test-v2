@@ -38,12 +38,12 @@
 
             //act
             var result = await this.giftAidController.GetGiftAidAmount(1000d).ConfigureAwait(false);
-            var giftAidResponse = result.Value;
+            var giftAidResponse = ((OkObjectResult)(result.Result)).Value;
 
             //assert
             Assert.IsNotNull(giftAidResponse);
-            Assert.AreEqual(127.5d, giftAidResponse.GiftAidAmount);
-            Assert.AreEqual(1000d, giftAidResponse.DonationAmount);
+            Assert.AreEqual(127.5d, ((GiftAidResponse)giftAidResponse).GiftAidAmount);
+            Assert.AreEqual(1000d, ((GiftAidResponse)giftAidResponse).DonationAmount);
         }
 
         [Test]
@@ -54,12 +54,12 @@
 
             //act
             var result = await this.giftAidController.GetGiftAidAmount(20d).ConfigureAwait(false);
-            var giftAidResponse = result.Value;
+            var giftAidResponse = ((OkObjectResult)(result.Result)).Value;
 
             //assert
             Assert.IsNotNull(giftAidResponse);
-            Assert.AreEqual(5d, giftAidResponse.GiftAidAmount);
-            Assert.AreEqual(20d, giftAidResponse.DonationAmount);
+            Assert.AreEqual(5d, ((GiftAidResponse)giftAidResponse).GiftAidAmount);
+            Assert.AreEqual(20d, ((GiftAidResponse)giftAidResponse).DonationAmount);
         }
 
         [Test]
@@ -70,12 +70,12 @@
 
             //act
             var result = await this.giftAidController.GetGiftAidAmount(100000.00d).ConfigureAwait(false);
-            var giftAidResponse = result.Value;
+            var giftAidResponse = ((OkObjectResult)(result.Result)).Value;
 
             //assert
             Assert.IsNotNull(giftAidResponse);
-            Assert.AreEqual(5d, giftAidResponse.GiftAidAmount);
-            Assert.AreEqual(100000.00d, giftAidResponse.DonationAmount);
+            Assert.AreEqual(5d, ((GiftAidResponse)giftAidResponse).GiftAidAmount);
+            Assert.AreEqual(100000.00d, ((GiftAidResponse)giftAidResponse).DonationAmount);
         }
 
         [Test]
