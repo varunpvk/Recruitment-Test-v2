@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-
-namespace JG.FinTech.Models
+﻿namespace JG.FinTech.Models
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
     public struct LoginModel : IEquatable<LoginModel>
     {
         /// <summary>

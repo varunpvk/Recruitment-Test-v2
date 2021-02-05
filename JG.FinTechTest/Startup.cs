@@ -13,7 +13,9 @@
     using Microsoft.IdentityModel.Tokens;
     using Microsoft.OpenApi.Models;
     using System;
+    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Text;
 
@@ -29,27 +31,31 @@
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddGiftAidFeature();
             services.AddDbContext<DonorContext>(options => options.UseSqlite(Configuration["SqliteConn:DonorDBConnString"]));
             services.AddGiftAidRepository();
             services.AddDeclarationToDonorMappingFeature();
+            services.ConfigureSwaggerGen(o =>
+            {
+                o.DocumentFilter<AuthorizeCheckOperationFilter>();
+                o.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
+            });
             services.AddSwaggerGen(o =>
             {
-                o.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                o.ResolveConflictingActions(apiDesc => apiDesc.First());
+                o.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Gift Aid Service",
                     Version = "1.0.0"
                 });
 
-                o.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                o.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
-                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
-                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-                    Description = "Basic Authorization header using the Bearer scheme."
+                    Type = SecuritySchemeType.ApiKey,
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
                 });
 
                 o.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
@@ -61,11 +67,12 @@
                             {
                                 Type = ReferenceType.SecurityScheme,
                                 Id = "Bearer"
-                            }
+                            },
                         },
-                        new string[]{}
+                        new List<string>()
                     }
                 });
+
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -76,19 +83,19 @@
             {
                 option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options => 
-            {
-                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+            }).AddJwtBearer(options =>
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = false,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = Configuration["Jwt:Issuer"],
-                    ValidAudience = Configuration["Jwt:Issuer"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
-                };
-            });
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = false,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration["Jwt:Issuer"],
+                        ValidAudience = Configuration["Jwt:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                    };
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -104,17 +111,19 @@
             }
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseRouting();
             app.UseAuthentication();
-
+            app.UseAuthorization();
+            app.UseEndpoints(o =>
+            {
+                o.MapControllerRoute("api", "api/v1.0/");
+            });
             app.UseStaticFiles();
             app.UseSwagger();
             app.UseSwaggerUI(o =>
             {
                 o.SwaggerEndpoint("/swagger/v1/swagger.json", "Gift API");
             });
-
-
         }
     }
 }
