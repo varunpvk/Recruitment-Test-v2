@@ -76,14 +76,15 @@
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GiftAidResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<GiftAidResponse>> AddDonor(DeclarationDetails declarationDetails)
+        [Authorize]
+        public async Task<ActionResult<DonorResponse>> AddDonor(DeclarationDetails declarationDetails)
         {
             try
             {
                 var donorDetails = await this.declarationToDonorMapper.GetDonorDetailsAsync(declarationDetails);
                 UpdateDonorDetailsWithUserClaims(donorDetails);
                 await this.giftAidRepository.AddDonorDetails(donorDetails);
-                return Ok(new GiftAidResponse
+                return Ok(new DonorResponse
                 {
                     DonorID = donorDetails.DonorID,
                     GiftAidAmount = donorDetails.GiftAid

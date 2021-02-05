@@ -1,21 +1,21 @@
 ﻿namespace JG.FinTech.Models
 {
+    using System.ComponentModel.DataAnnotations;
     using System.Runtime.Serialization;
     using System.Text.Json.Serialization;
 
     [DataContract]
-    public struct GiftAidResponse
+    public struct DonorResponse
     {
-        [JsonIgnore]
+        [DataMember, Key]
         public string DonorID { get; set; }
-        
+
         /// <summary>
         /// 25
         /// </summary>
         [DataMember]
         public double GiftAidAmount { get; set; }
 
-        [DataMember]
         [JsonIgnore]
         public double DonationAmount { get; set; }
     }
