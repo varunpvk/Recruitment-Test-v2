@@ -1,5 +1,6 @@
 ﻿namespace JG.FinTechTest.Tests.JG.FinTech.Features.Tests
 {
+    using global::JG.FinTech.Domain;
     using global::JG.FinTech.Features;
     using global::JG.FinTech.Features.GiftAidCalculator;
     using global::JG.FinTech.Models;
@@ -11,6 +12,7 @@
     public class DeclarationToDonorMapperTests 
     {
         private Mock<IGiftAidCalculator> giftAidCalculatorMock;
+        private Mock<IGiftAidRepository> giftAidRepositoryMock;
         private DeclarationDetails declarationDetails;
         private DeclarationToDonorMapper declarationToDonorMapper;
 
@@ -18,7 +20,9 @@
         public void Setup()
         {
             giftAidCalculatorMock = new Mock<IGiftAidCalculator>();
-            declarationToDonorMapper = new DeclarationToDonorMapper(giftAidCalculatorMock.Object);
+            giftAidRepositoryMock = new Mock<IGiftAidRepository>();
+
+            declarationToDonorMapper = new DeclarationToDonorMapper(giftAidCalculatorMock.Object, giftAidRepositoryMock.Object);
         }
 
         [Test]

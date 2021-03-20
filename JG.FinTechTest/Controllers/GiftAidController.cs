@@ -11,6 +11,7 @@
     using Microsoft.Extensions.Configuration;
     using System;
     using System.Linq;
+    using System.Net;
     using System.Net.Mime;
     using System.Threading.Tasks;
 
@@ -73,7 +74,7 @@
         [HttpPut]
         [Route(FinTechRoutes.addDonorPath)]
         [Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GiftAidResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DonorResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [Authorize]
@@ -89,6 +90,45 @@
                     DonorID = donorDetails.DonorID,
                     GiftAidAmount = donorDetails.GiftAid
                 });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Finds a Donor by ID - This endpoint has a vulnerability
+        /// Using this endpoint, you can do sql injection
+        /// </summary>
+        /// <param name="donorDetails"></param>
+        [HttpGet]
+        [Route(FinTechRoutes.getDonorPath)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DonorDetailsResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [AllowAnonymous]
+        public async Task<ActionResult<DonorDetailsResponse>> GetDonorAsync(string id)
+        {
+            try
+            {
+                var donorDetails = await this.declarationToDonorMapper.GetDonorDetailsByIdAsync(id);
+                if(donorDetails != default)
+                {
+                    return Ok(new DonorDetailsResponse
+                    {
+                        DonorID = donorDetails.DonorID,
+                        DonationAmount = donorDetails.DonationAmount,
+                        GiftAid = donorDetails.GiftAid,
+                        Name = donorDetails.Name,
+                        PostCode = donorDetails.PostCode
+                    });
+                }
+                else
+                {
+                    return NotFound(new String($"[ErrorCode: {HttpStatusCode.NotFound}] Donor by id: {id} not found"));
+                }
             }
             catch (Exception ex)
             {

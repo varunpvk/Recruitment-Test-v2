@@ -26,6 +26,5 @@
         public static bool operator >(GiftAid obj1, GiftAid obj2) => obj1.DenominationAmount > obj2.DenominationAmount;
 
         public static bool operator <(GiftAid obj1, GiftAid obj2) => obj1.DenominationAmount < obj2.DenominationAmount;
-
     }
 }

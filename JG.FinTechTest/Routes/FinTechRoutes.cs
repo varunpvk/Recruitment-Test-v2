@@ -7,5 +7,6 @@
         public const string basePath = "api";
         public const string donorsLoginPath = "donors";
         public const string tokenPath = "token";
+        public const string getDonorPath = "donor/get";
     }
 }

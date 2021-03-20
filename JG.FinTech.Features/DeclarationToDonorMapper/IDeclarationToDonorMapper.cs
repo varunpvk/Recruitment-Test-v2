@@ -6,5 +6,6 @@
     public interface IDeclarationToDonorMapper
     {
         Task<DonorDetails> GetDonorDetailsAsync(DeclarationDetails declarationDetails);
+        Task<DonorDetails> GetDonorDetailsByIdAsync(string id);
     }
 }

@@ -2,6 +2,7 @@
 {
     using global::JG.FinTech.Domain;
     using global::JG.FinTech.Models;
+    using Microsoft.Extensions.Configuration;
     using Moq;
     using NUnit.Framework;
     using System;
@@ -12,13 +13,15 @@
     {
         private Mock<DonorContext> donorContextMock;
         private GiftAidRepository giftAidRepository;
+        private Mock<IConfiguration> configurationMock;
         private DonorDetails donorDetails;
 
         [SetUp]
         public void Setup()
         {
             donorContextMock = new Mock<DonorContext>();
-            giftAidRepository = new GiftAidRepository(donorContextMock.Object);
+            configurationMock = new Mock<IConfiguration>();
+            giftAidRepository = new GiftAidRepository(donorContextMock.Object, configurationMock.Object);
         }
 
         [Test]
